@@ -40,7 +40,7 @@ def run_agent(request: AgentRequest):
     try:
         response = client.chat.completions.create(
             # Using an explicitly free model (ends in :free)
-            model="google/gemma-4-26b-a4b-it:free", 
+            model="openrouter/free", 
             messages=[
                 {"role": "system", "content": "You are a helpful AI assistant."},
                 {"role": "user", "content": request.prompt}
