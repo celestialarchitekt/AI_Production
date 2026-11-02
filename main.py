@@ -25,7 +25,7 @@ client = OpenAI(
 )
 
 
-class PromptRequest(BaseModel):
+class AgentRequest(BaseModel):
     prompt: str
 
 # root
