@@ -36,19 +36,20 @@ def health_check():
 
 # run agent
 @app.post("/run-agent")
-def run_agent(request: PromptRequest):
+def run_agent(request: AgentRequest):
     try:
-        # Placeholder for your LangGraph invocation or direct OpenAI call
         response = client.chat.completions.create(
-            model="gpt-4o-mini",
+            # Using an explicitly free model (ends in :free)
+            model="google/gemma-4-26b-a4b-it:free", 
             messages=[
                 {"role": "system", "content": "You are a helpful AI assistant."},
                 {"role": "user", "content": request.prompt}
             ]
         )
         return {
-            "success": True, 
-            "result": response.choices[0].message.content
+            "status": "success",
+            "model_used": response.model,
+            "response": response.choices[0].message.content
         }
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        return {"status": "error", "message": str(e)}
