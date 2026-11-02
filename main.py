@@ -4,26 +4,37 @@ FastAPI Server
 ==============
 """
 
-
+# env VARs
 from dotenv import load_dotenv
-load_dotenv()
+load_dotenv(override=True)
 
+
+# imports
 import os
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from openai import OpenAI
 
+
 app = FastAPI(title="LangGraph Render Agent")
 
-client = OpenAI()
+# OpenAI API
+client = OpenAI(
+    base_url="https://openrouter.ai/api/v1",
+    api_key=os.environ.get("OPENROUTER_API_KEY"),
+)
+
 
 class PromptRequest(BaseModel):
     prompt: str
 
+# root
 @app.get("/")
 def health_check():
     return {"status": "online", "message": "Agent backend is running!"}
 
+
+# run agent
 @app.post("/run-agent")
 def run_agent(request: PromptRequest):
     try:
